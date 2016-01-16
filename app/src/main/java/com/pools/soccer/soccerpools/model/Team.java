@@ -7,27 +7,37 @@ import java.io.Serializable;
  */
 public class Team implements Serializable {
 
+    private String id;
     private String name;
-    private String imageId;
+    private int imageId;
 
     public String getName() {
         return name;
     }
 
-    public Team(String name, String imageId) {
+    public Team(String id, String name, int imageId) {
+        this.id = id;
         this.name = name;
         this.imageId = imageId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getImageId() {
+    public int getImageId() {
         return imageId;
     }
 
-    public void setImageId(String imageId) {
+    public void setImageId(int imageId) {
         this.imageId = imageId;
     }
 }

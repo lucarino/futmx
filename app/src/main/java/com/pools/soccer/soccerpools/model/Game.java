@@ -1,5 +1,7 @@
 package com.pools.soccer.soccerpools.model;
 
+import com.parse.ParseObject;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +9,7 @@ import java.io.Serializable;
  */
 public class Game implements Serializable {
 
+    private String id;
     private Team home;
     private Team guest;
     private Score score;
@@ -26,6 +29,14 @@ public class Game implements Serializable {
         this.home = home;
         this.guest = guest;
         this.score = score;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Team getHome() {

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.pools.soccer.soccerpools.scores.ScoresFragment;
+import com.pools.soccer.soccerpools.game.creator.GameCreatorFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .add(R.id.main_container, new ScoresFragment())
+                .add(R.id.main_container, new GameCreatorFragment())
                 .commit();
 
     }

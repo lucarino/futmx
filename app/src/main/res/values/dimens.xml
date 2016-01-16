@@ -3,4 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="team_button_adapter_radius">22dp</dimen>
+    <dimen name="fav_button_next_game">16dp</dimen>
 </resources>
