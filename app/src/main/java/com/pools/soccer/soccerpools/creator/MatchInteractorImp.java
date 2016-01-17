@@ -1,15 +1,15 @@
-package com.pools.soccer.soccerpools.game.creator;
+package com.pools.soccer.soccerpools.creator;
 
 import com.pools.soccer.soccerpools.service.ParseCoreManager;
 
 /**
  * Created by lucarino on 1/16/16.
  */
-public class GameCreatorInteractorImp implements GameCreatorContract.Interactor {
+public class MatchInteractorImp implements MatchContract.Interactor {
 
     ParseCoreManager mParseCoreManager;
 
-    public GameCreatorInteractorImp(){
+    public MatchInteractorImp(){
        mParseCoreManager  = new ParseCoreManager();
     }
 
@@ -18,6 +18,8 @@ public class GameCreatorInteractorImp implements GameCreatorContract.Interactor 
         mParseCoreManager.getAllTeams();
     }
 
-
-
+    @Override
+    public void createGame(String homeId, String visitorId) {
+        mParseCoreManager.createGame(homeId, visitorId);
+    }
 }

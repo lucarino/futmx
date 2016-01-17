@@ -5,4 +5,12 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="team_button_adapter_radius">22dp</dimen>
     <dimen name="fav_button_next_game">16dp</dimen>
+    <dimen name="team_card_image_size">90dp</dimen>
+    <dimen name="med_padding">12dp</dimen>
+    <dimen name="margin_small">6dp</dimen>
+    <dimen name="margin_normal">8dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="margin_xlarge">22dp</dimen>
+    <dimen name="card_view_corner_radius">2dp</dimen>
 </resources>

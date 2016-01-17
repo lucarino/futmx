@@ -6,4 +6,8 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="save_button">Save</string>
     <string name="create_game_home">Home</string>
+    <string name="team_card_home_button">Home</string>
+    <string name="team_card_visitor_button">Visitor</string>
+    <string name="select_home_team_confirmation">Are you sure you want to set %1$s as home team?</string>
+    <string name="confirm_match">The match %1$s VS %2$s will be created.</string>
 </resources>

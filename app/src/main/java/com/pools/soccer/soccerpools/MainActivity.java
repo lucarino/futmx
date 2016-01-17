@@ -3,24 +3,31 @@ package com.pools.soccer.soccerpools;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.pools.soccer.soccerpools.game.creator.GameCreatorFragment;
+import com.pools.soccer.soccerpools.creator.CreateMatchFragment;
+import com.pools.soccer.soccerpools.service.ParseCoreManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
+    private Toolbar mToolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+
+
         FragmentManager fragmentManager = getSupportFragmentManager();
+        CreateMatchFragment fragment = new CreateMatchFragment();
         fragmentManager
                 .beginTransaction()
-                .add(R.id.main_container, new GameCreatorFragment())
+                .add(R.id.main_container, fragment)
                 .commit();
-
+        setToolbarTile(fragment.getToolbarTitle());
     }
 
     @Override
@@ -46,5 +53,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void setToolbarTile(final String tile) {
+        mToolBar.setTitle(tile);
+    }
 
 }

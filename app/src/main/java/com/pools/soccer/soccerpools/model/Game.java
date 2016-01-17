@@ -1,7 +1,5 @@
 package com.pools.soccer.soccerpools.model;
 
-import com.parse.ParseObject;
-
 import java.io.Serializable;
 
 /**

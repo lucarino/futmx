@@ -1,10 +1,8 @@
-package com.pools.soccer.soccerpools.scores;
+package com.pools.soccer.soccerpools.service;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.pools.soccer.soccerpools.model.Bet;
 import com.pools.soccer.soccerpools.model.Score;
-import com.pools.soccer.soccerpools.model.Team;
 
 /**
  * Created by lucarino on 1/14/16.
@@ -21,6 +19,7 @@ public class GameDAO extends ParseObject {
 
     public GameDAO() {
     }
+
 
     public String getHome() {
         return getString(GAMES_HOME_COL_NAME);
@@ -42,15 +41,7 @@ public class GameDAO extends ParseObject {
         put(GAMES_HOME_COL_NAME, home);
     }
 
-    public void setHome(String home) {
-        put(GAMES_HOME_COL_NAME, home);
-    }
-
     public void setGuest(TeamDAO guest) {
-        put(GAMES_GUEST_COL_NAME, guest);
-    }
-
-    public void setGuest(String guest) {
         put(GAMES_GUEST_COL_NAME, guest);
     }
 

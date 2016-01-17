@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
-import com.pools.soccer.soccerpools.scores.GameDAO;
-import com.pools.soccer.soccerpools.scores.TeamDAO;
+import com.pools.soccer.soccerpools.service.GameDAO;
+import com.pools.soccer.soccerpools.service.TeamDAO;
 
 /**
  * Created by lucarino on 1/13/16.

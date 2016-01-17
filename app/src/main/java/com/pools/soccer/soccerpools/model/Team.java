@@ -7,18 +7,20 @@ import java.io.Serializable;
  */
 public class Team implements Serializable {
 
+
     private String id;
     private String name;
-    private int imageId;
+    private String imageName;
+    private boolean isVisitor;
 
     public String getName() {
         return name;
     }
 
-    public Team(String id, String name, int imageId) {
+    public Team(String id, String name, String imageId) {
         this.id = id;
         this.name = name;
-        this.imageId = imageId;
+        this.imageName = imageId;
     }
 
     public String getId() {
@@ -33,11 +35,19 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public int getImageId() {
-        return imageId;
+    public String getImageId() {
+        return imageName;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setImageId(String imageId) {
+        this.imageName = imageId;
+    }
+
+    public boolean isVisitor() {
+        return isVisitor;
+    }
+
+    public void setIsVisitor(boolean isVisitor) {
+        this.isVisitor = isVisitor;
     }
 }
