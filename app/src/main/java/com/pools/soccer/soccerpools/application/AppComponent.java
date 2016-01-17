@@ -1,8 +1,11 @@
 package com.pools.soccer.soccerpools.application;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
-import com.pools.soccer.soccerpools.MainActivity;
+import com.pools.soccer.soccerpools.commons.BaseActivity;
+import com.pools.soccer.soccerpools.commons.BaseFragment;
 import com.pools.soccer.soccerpools.creator.CreateMatchFragment;
 import com.pools.soccer.soccerpools.creator.MatchInteractorImp;
 import com.pools.soccer.soccerpools.creator.MatchPresenterImp;
@@ -23,7 +26,9 @@ import dagger.Component;
 public interface AppComponent {
 
     // define functions to inject specific type objects
-    void inject(MainActivity activity);
+    void inject(BaseActivity activity);
+    void inject(BaseFragment fragment);
+
     void inject(CreateMatchFragment fragment);
     void inject(MatchPresenterImp presenterImp);
     void inject(MatchInteractorImp interactorImp);

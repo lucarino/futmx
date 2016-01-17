@@ -65,7 +65,7 @@ public class TeamRecyclerViewAdapter extends RecyclerView.Adapter<TeamRecyclerVi
 
         holder.isVisitor = team.isVisitor();
         holder.position = position;
-        if(holder.isVisitor){
+        if (holder.isVisitor) {
             holder.btnHome.setVisibility(View.GONE);
             holder.btnVisitor.setVisibility(View.VISIBLE);
         }
@@ -74,12 +74,11 @@ public class TeamRecyclerViewAdapter extends RecyclerView.Adapter<TeamRecyclerVi
 
         //set image
         int resourceId = getResourceId(team.getImageId());
-        if (resourceId != -1){
+        if (resourceId != -1) {
             Picasso.with(mContext).load(resourceId).into(holder.ivTeam);
         }
 
         //holder.ivTeam.setImageDrawable(getResourceByName(team.getImageId()));
-
 
 
     }
@@ -150,21 +149,13 @@ public class TeamRecyclerViewAdapter extends RecyclerView.Adapter<TeamRecyclerVi
         return mContext.getResources().getIdentifier(name, "drawable", mContext.getPackageName());
     }
 
-    private Drawable getResourceByName(String name) {
-        final String TYPE = "drawable";
-        Resources resources = mContext.getResources();
-        final int resourceId = resources.getIdentifier(name, TYPE,
-                mContext.getPackageName());
-        return resources.getDrawable(resourceId);
-    }
-
     public Team getItem(int location) {
         return mDataSet.get(location);
     }
 
-    public void updateToVisitor(int position){
+    public void updateToVisitor(int position) {
         mDataSet.remove(position);
-        for(Team t : mDataSet){
+        for (Team t : mDataSet) {
             t.setIsVisitor(true);
         }
         this.notifyDataSetChanged();

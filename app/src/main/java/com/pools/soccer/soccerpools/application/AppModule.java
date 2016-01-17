@@ -1,10 +1,12 @@
 package com.pools.soccer.soccerpools.application;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 
 import com.pools.soccer.soccerpools.creator.MatchContract;
 import com.pools.soccer.soccerpools.creator.MatchInteractorImp;
 import com.pools.soccer.soccerpools.creator.MatchPresenterImp;
+import com.pools.soccer.soccerpools.navigator.Navigator;
 import com.pools.soccer.soccerpools.service.ParseCoreManager;
 import com.pools.soccer.soccerpools.util.OttoBus;
 
@@ -56,6 +58,12 @@ public class AppModule {
     @Provides
     public MatchContract.Presenter providesMatchPresent(MatchContract.View mView){
         return new MatchPresenterImp(mView);
+    }
+
+    @Singleton
+    @Provides
+    public Navigator provideNavigator(FragmentActivity activity){
+        return new Navigator(activity);
     }
 
 }

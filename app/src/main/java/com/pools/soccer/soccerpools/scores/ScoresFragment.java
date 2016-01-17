@@ -2,24 +2,26 @@ package com.pools.soccer.soccerpools.scores;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.pools.soccer.soccerpools.R;
+import com.pools.soccer.soccerpools.commons.BaseFragment;
 import com.pools.soccer.soccerpools.util.DummyData;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by lucarino on 1/13/16.
+ * Fragment that shows weekly matches and if available it will
+ * expose UI components that let the user create a bet for the match.
+ *
+ * @author luis.carino
  */
-public class ScoresFragment extends Fragment {
+public class ScoresFragment extends BaseFragment {
 
     @Bind(R.id.rv_games)
     RecyclerView mGamesRecyclerView;
@@ -27,7 +29,6 @@ public class ScoresFragment extends Fragment {
     public ScoresFragment() {
 
     }
-
 
 
     @Nullable

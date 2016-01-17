@@ -1,10 +1,8 @@
 package com.pools.soccer.soccerpools.creator;
 
-import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,30 +12,23 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.pools.soccer.soccerpools.R;
-import com.pools.soccer.soccerpools.application.SoccerPoolsApplication;
+import com.pools.soccer.soccerpools.commons.BaseFragment;
 import com.pools.soccer.soccerpools.model.Team;
-import com.pools.soccer.soccerpools.util.OttoBus;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Game creator fragment, exposes UI elements so the user can
- * select the home and guest teams for this match.
+ * Match creator fragment, exposes UI elements so the user can
+ * select the home and visitor teams and create a new match.
  */
-public class CreateMatchFragment extends Fragment implements MatchContract.View, TeamRecyclerViewAdapter.OnTeamClickListener {
+public class CreateMatchFragment extends BaseFragment implements MatchContract.View,
+        TeamRecyclerViewAdapter.OnTeamClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
-
-    @Inject
-    OttoBus mBus;
-    @Inject
-    Context mContext;
 
     @Bind(R.id.rv_teams)
     RecyclerView rvTeams;
@@ -57,9 +48,6 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // register fragment to the bus
-        SoccerPoolsApplication.getApplicationComponent().inject(this);
-        mBus.register(this);
 
         // set listener for presenter callbacks
         mUserActionListener = new MatchPresenterImp(this);
@@ -79,12 +67,6 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
         View root = inflater.inflate(R.layout.fragment_game, container, false);
         ButterKnife.bind(this, root);
         return root;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mBus.unregister(this);
     }
 
 
@@ -131,6 +113,9 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
     @Override
     public void onVisitorButtonClicked(final int position, View view) {
         final Team team = mAdapter.getItem(position);
+
+        // TODO: replace this for a dialog, maybe?
+
         Snackbar.make(getView(), String.format(getString(R.string.confirm_match), homeName, team.getName()),
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction("SAVE", new View.OnClickListener() {
@@ -148,6 +133,6 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
     }
 
     public String getToolbarTitle() {
-        return "Create new Match";
+        return mContext.getString(R.string.title_create_match_fragment);
     }
 }
