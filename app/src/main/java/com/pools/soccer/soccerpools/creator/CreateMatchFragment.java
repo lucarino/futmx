@@ -1,25 +1,26 @@
 package com.pools.soccer.soccerpools.creator;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.pools.soccer.soccerpools.R;
+import com.pools.soccer.soccerpools.application.SoccerPoolsApplication;
 import com.pools.soccer.soccerpools.model.Team;
-import com.pools.soccer.soccerpools.util.OttoHelper;
+import com.pools.soccer.soccerpools.util.OttoBus;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,6 +33,11 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
 
     private final String TAG = this.getClass().getSimpleName();
 
+
+    @Inject
+    OttoBus mBus;
+    @Inject
+    Context mContext;
 
     @Bind(R.id.rv_teams)
     RecyclerView rvTeams;
@@ -52,7 +58,8 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // register fragment to the bus
-        OttoHelper.getInstance().register(this);
+        SoccerPoolsApplication.getApplicationComponent().inject(this);
+        mBus.register(this);
 
         // set listener for presenter callbacks
         mUserActionListener = new MatchPresenterImp(this);
@@ -77,7 +84,7 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
     @Override
     public void onStop() {
         super.onStop();
-        OttoHelper.getInstance().unregister(this);
+        mBus.unregister(this);
     }
 
 
@@ -98,7 +105,7 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
                     outRect.top = distance;
             }
         });
-        mAdapter = new TeamRecyclerViewAdapter(teams, this, getContext());
+        mAdapter = new TeamRecyclerViewAdapter(teams, this);
         rvTeams.setAdapter(mAdapter);
 
     }
@@ -130,17 +137,17 @@ public class CreateMatchFragment extends Fragment implements MatchContract.View,
                     @Override
                     public void onClick(View v) {
                         mUserActionListener.createNewGame(homeId, team.getId());
-                        Log.d(TAG, homeId+" VS "+team.getId());
+                        Log.d(TAG, homeId + " VS " + team.getId());
                     }
                 }).show();
     }
 
     @Override
     public void onGameCreated() {
-        Toast.makeText(getContext(), "GAME CREATED :D", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "GAME CREATED :D", Toast.LENGTH_LONG).show();
     }
 
-    public String getToolbarTitle(){
+    public String getToolbarTitle() {
         return "Create new Match";
     }
 }

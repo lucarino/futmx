@@ -1,10 +1,12 @@
 package com.pools.soccer.soccerpools.creator;
 
+import com.pools.soccer.soccerpools.application.SoccerPoolsApplication;
 import com.pools.soccer.soccerpools.service.ParseCoreManager;
-import com.pools.soccer.soccerpools.util.OttoHelper;
+import com.pools.soccer.soccerpools.util.OttoBus;
 import com.squareup.otto.Subscribe;
 
-import org.apache.commons.collections4.CollectionUtils;
+
+import javax.inject.Inject;
 
 /**
  * Concrete implementation for presenter in create feature.
@@ -13,14 +15,19 @@ import org.apache.commons.collections4.CollectionUtils;
  */
 public class MatchPresenterImp implements MatchContract.Presenter {
 
-    private MatchContract.Interactor mInteractor;
+    @Inject
+    MatchContract.Interactor mInteractor;
     private MatchContract.View mView;
 
+    @Inject
+    OttoBus mBus;
 
+
+    @Inject
     public MatchPresenterImp(MatchContract.View mView) {
+        SoccerPoolsApplication.getApplicationComponent().inject(this);
         this.mView = mView;
-        mInteractor = new MatchInteractorImp();
-        OttoHelper.getInstance().register(this);
+        mBus.register(this);
     }
 
     @Override
@@ -38,7 +45,7 @@ public class MatchPresenterImp implements MatchContract.Presenter {
     @Subscribe
     public void onTeamsFeched(ParseCoreManager.TeamResultEvent event) {
 
-        if (event.isSuccess() && !CollectionUtils.isEmpty(event.getTeams())) {
+        if (event.isSuccess() && event.getTeams() != null && !event.getTeams().isEmpty()) {
             mView.setTeamsToAdapter(event.getTeams());
         }
 

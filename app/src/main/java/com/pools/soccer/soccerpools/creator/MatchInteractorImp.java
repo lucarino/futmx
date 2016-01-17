@@ -1,16 +1,23 @@
 package com.pools.soccer.soccerpools.creator;
 
+import com.pools.soccer.soccerpools.application.SoccerPoolsApplication;
 import com.pools.soccer.soccerpools.service.ParseCoreManager;
 
+import javax.inject.Inject;
+
 /**
- * Created by lucarino on 1/16/16.
+ * Concrete interactor implementation.
+ *
+ * @author luis.carino
  */
 public class MatchInteractorImp implements MatchContract.Interactor {
 
     ParseCoreManager mParseCoreManager;
 
-    public MatchInteractorImp(){
-       mParseCoreManager  = new ParseCoreManager();
+    @Inject
+    public MatchInteractorImp(ParseCoreManager parseCoreManager) {
+        SoccerPoolsApplication.getApplicationComponent().inject(this);
+        mParseCoreManager = parseCoreManager;
     }
 
     @Override

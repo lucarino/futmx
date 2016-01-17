@@ -1,32 +1,40 @@
 package com.pools.soccer.soccerpools;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pools.soccer.soccerpools.application.SoccerPoolsApplication;
 import com.pools.soccer.soccerpools.creator.CreateMatchFragment;
-import com.pools.soccer.soccerpools.service.ParseCoreManager;
+import com.pools.soccer.soccerpools.navigator.Navigator;
+import com.pools.soccer.soccerpools.util.OttoBus;
 
-public class MainActivity extends AppCompatActivity  {
+import javax.inject.Inject;
 
-    private Toolbar mToolBar;
+public class MainActivity extends AppCompatActivity {
+
+    protected Navigator mNavigator;
+
+    @Inject
+    OttoBus mBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        SoccerPoolsApplication.getApplicationComponent().inject(this);
+        // init objects
+        mBus.register(this);
+        mNavigator = new Navigator(this);
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
         CreateMatchFragment fragment = new CreateMatchFragment();
-        fragmentManager
-                .beginTransaction()
-                .add(R.id.main_container, fragment)
-                .commit();
+        mNavigator.navigateTo(R.id.main_container, fragment);
+
+
         setToolbarTile(fragment.getToolbarTitle());
     }
 
@@ -54,6 +62,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
     public void setToolbarTile(final String tile) {
+        Toolbar mToolBar = (Toolbar) findViewById(R.id.toolbar);
         mToolBar.setTitle(tile);
     }
 

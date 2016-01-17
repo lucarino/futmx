@@ -6,14 +6,15 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.pools.soccer.soccerpools.application.SoccerPoolsApplication;
 import com.pools.soccer.soccerpools.model.Game;
 import com.pools.soccer.soccerpools.model.Team;
-import com.pools.soccer.soccerpools.util.OttoHelper;
-
-import org.apache.commons.collections4.CollectionUtils;
+import com.pools.soccer.soccerpools.util.OttoBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Manager for interaction with  Parse Core.
@@ -23,9 +24,13 @@ public class ParseCoreManager {
     private final String TAG = this.getClass().getSimpleName();
     private GameDAO mGameDAO;
 
+    @Inject
+    OttoBus mBus;
+
     public ParseCoreManager() {
-        OttoHelper.getInstance().register(this);
+        SoccerPoolsApplication.getApplicationComponent().inject(this);
         mGameDAO = new GameDAO();
+        mBus.register(this);
     }
 
     public List<Game> retireveGames(int week) {
@@ -52,7 +57,7 @@ public class ParseCoreManager {
         queryTeamsForMatch.findInBackground(new FindCallback<TeamDAO>() {
             @Override
             public void done(List<TeamDAO> objects, ParseException e) {
-                if (!CollectionUtils.isEmpty(objects) && e == null) {
+                if (objects != null && !objects.isEmpty() && e == null) {
                     // check for home and visitor
                     if (objects.get(0).getObjectId().equals(home)) {
                         mGameDAO.setHome(objects.get(0));
@@ -63,14 +68,15 @@ public class ParseCoreManager {
                     }
                     mGameDAO.saveInBackground(new SaveCallback() {
                         CreateMatchEvent event = new CreateMatchEvent();
+
                         @Override
                         public void done(ParseException e) {
                             if (e != null) {
                                 event.setIsSuccess(false);
-                                Log.d(TAG, "something bad happened when creating match " +e.getMessage());
+                                Log.d(TAG, "something bad happened when creating match " + e.getMessage());
                             } else {
                                 event.setIsSuccess(true);
-                                OttoHelper.getInstance().post(event);
+                                mBus.post(event);
                             }
                         }
                     });
@@ -94,7 +100,7 @@ public class ParseCoreManager {
             public void done(List<TeamDAO> teams, ParseException e) {
 
                 TeamResultEvent teamResultEvent = new TeamResultEvent();
-                if (!CollectionUtils.isEmpty(teams) && e == null) {
+                if (teams != null && !teams.isEmpty() && e == null) {
                     teamResultEvent.setIsSuccess(true);
                     teamResultEvent.setTeams(teams);
                     Log.d(TAG, String.format("Response from fetching teams %s", teams.toString()));
@@ -104,7 +110,7 @@ public class ParseCoreManager {
                     Log.d(TAG, String.format("Something bad happen when fetching teams error: %s", e.getMessage()));
                 }
 
-                OttoHelper.getInstance().post(teamResultEvent);
+                mBus.post(teamResultEvent);
             }
         });
     }

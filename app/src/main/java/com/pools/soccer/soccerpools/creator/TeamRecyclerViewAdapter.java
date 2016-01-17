@@ -15,9 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pools.soccer.soccerpools.R;
+import com.pools.soccer.soccerpools.application.SoccerPoolsApplication;
 import com.pools.soccer.soccerpools.model.Team;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,15 +36,16 @@ public class TeamRecyclerViewAdapter extends RecyclerView.Adapter<TeamRecyclerVi
 
     private List<Team> mDataSet;
     private static OnTeamClickListener mClickListener;
-    private static Context mContext;
+    @Inject
+    Context mContext;
 
     // Allows to remember the last item shown on screen
     private int lastPosition = -1;
 
-    public TeamRecyclerViewAdapter(List<Team> mDataSet, OnTeamClickListener listener, Context context) {
+    public TeamRecyclerViewAdapter(List<Team> mDataSet, OnTeamClickListener listener) {
+        SoccerPoolsApplication.getApplicationComponent().inject(this);
         this.mDataSet = mDataSet;
         mClickListener = listener;
-        mContext = context;
     }
 
     @Override
@@ -57,7 +62,7 @@ public class TeamRecyclerViewAdapter extends RecyclerView.Adapter<TeamRecyclerVi
     public void onBindViewHolder(ViewHolder holder, int position) {
         Team team = mDataSet.get(position);
         holder.tvTeamName.setText(team.getName());
-        holder.ivTeam.setImageDrawable(getResourceByName(team.getImageId()));
+
         holder.isVisitor = team.isVisitor();
         holder.position = position;
         if(holder.isVisitor){
@@ -66,6 +71,14 @@ public class TeamRecyclerViewAdapter extends RecyclerView.Adapter<TeamRecyclerVi
         }
 
         holder.tvTeamName.setTag(holder);
+
+        //set image
+        int resourceId = getResourceId(team.getImageId());
+        if (resourceId != -1){
+            Picasso.with(mContext).load(resourceId).into(holder.ivTeam);
+        }
+
+        //holder.ivTeam.setImageDrawable(getResourceByName(team.getImageId()));
 
 
 
@@ -130,6 +143,11 @@ public class TeamRecyclerViewAdapter extends RecyclerView.Adapter<TeamRecyclerVi
         void onHomeButtonClicked(int position, View view);
 
         void onVisitorButtonClicked(int position, View view);
+    }
+
+
+    private int getResourceId(String name) {
+        return mContext.getResources().getIdentifier(name, "drawable", mContext.getPackageName());
     }
 
     private Drawable getResourceByName(String name) {

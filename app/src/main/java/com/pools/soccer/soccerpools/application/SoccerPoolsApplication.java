@@ -6,19 +6,30 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 import com.pools.soccer.soccerpools.service.GameDAO;
 import com.pools.soccer.soccerpools.service.TeamDAO;
+import com.pools.soccer.soccerpools.util.ParseUtils;
 
 /**
- * Created by lucarino on 1/13/16.
+ * Main application object.
+ *
+ * @author luis.carino
  */
 public class SoccerPoolsApplication extends Application {
+
+    private static AppComponent mApplicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        // registering ParseObject subclasses.
-        ParseObject.registerSubclass(GameDAO.class);
-        ParseObject.registerSubclass(TeamDAO.class);
-        Parse.initialize(this);
+        // builds graph used for dependency injection.
+        mApplicationComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+
+        // set up parse.
+        ParseUtils.registerSubclasses(TeamDAO.class, GameDAO.class);
+        ParseUtils.init(this);
+    }
+
+    public static AppComponent getApplicationComponent() {
+        return mApplicationComponent;
     }
 }
