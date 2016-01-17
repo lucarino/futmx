@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF5252</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="gray_divider">#8294aa</color>
+    <color name="vertical_separator_color">#e3e7ec</color>
 </resources>

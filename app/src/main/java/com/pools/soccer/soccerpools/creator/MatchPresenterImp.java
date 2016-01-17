@@ -1,4 +1,4 @@
-package com.pools.soccer.soccerpools.game.creator;
+package com.pools.soccer.soccerpools.creator;
 
 import com.pools.soccer.soccerpools.service.ParseCoreManager;
 import com.pools.soccer.soccerpools.util.OttoHelper;
@@ -11,15 +11,15 @@ import org.apache.commons.collections4.CollectionUtils;
  *
  * @author luis.carino
  */
-public class GameCreatorPresenterImp implements GameCreatorContract.Presenter {
+public class MatchPresenterImp implements MatchContract.Presenter {
 
-    private GameCreatorContract.Interactor mInteractor;
-    private GameCreatorContract.View mView;
+    private MatchContract.Interactor mInteractor;
+    private MatchContract.View mView;
 
 
-    public GameCreatorPresenterImp(GameCreatorContract.View mView) {
+    public MatchPresenterImp(MatchContract.View mView) {
         this.mView = mView;
-        mInteractor = new GameCreatorInteractorImp();
+        mInteractor = new MatchInteractorImp();
         OttoHelper.getInstance().register(this);
     }
 
@@ -29,13 +29,27 @@ public class GameCreatorPresenterImp implements GameCreatorContract.Presenter {
     }
 
 
+    @Override
+    public void createNewGame(String homeId, String visitorId) {
+        mInteractor.createGame(homeId, visitorId);
+    }
+
     /////////////////////// Event bus subscriptions callbacks from interactor////////////////////////////
     @Subscribe
     public void onTeamsFeched(ParseCoreManager.TeamResultEvent event) {
 
         if (event.isSuccess() && !CollectionUtils.isEmpty(event.getTeams())) {
-            mView.setTeamsToSpinner(event.getTeams());
+            mView.setTeamsToAdapter(event.getTeams());
         }
 
     }
+
+
+    @Subscribe
+    public void onMatchCreated(ParseCoreManager.CreateMatchEvent event){
+        if(event.isSuccess()){
+            mView.onGameCreated();
+        }
+    }
+
 }

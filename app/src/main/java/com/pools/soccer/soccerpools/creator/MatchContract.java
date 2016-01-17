@@ -1,4 +1,4 @@
-package com.pools.soccer.soccerpools.game.creator;
+package com.pools.soccer.soccerpools.creator;
 
 import com.pools.soccer.soccerpools.model.Team;
 
@@ -9,17 +9,21 @@ import java.util.List;
  *
  * @author luis.carino
  */
-public interface GameCreatorContract {
+public interface MatchContract {
 
     interface View {
-        void setTeamsToSpinner(List<Team> teams);
+        void setTeamsToAdapter(List<Team> teams);
+        void onGameCreated();
     }
 
     interface Presenter {
         void getAllTeams();
+        void createNewGame(String homeId, String visitorId);
     }
 
     interface Interactor {
         void fetchAllTeams();
+        void createGame(String homeId, String visitorId);
     }
+
 }

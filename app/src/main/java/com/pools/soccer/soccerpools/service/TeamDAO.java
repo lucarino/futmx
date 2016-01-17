@@ -1,4 +1,4 @@
-package com.pools.soccer.soccerpools.scores;
+package com.pools.soccer.soccerpools.service;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -6,14 +6,14 @@ import com.parse.ParseQuery;
 import com.pools.soccer.soccerpools.model.Team;
 
 /**
- * Created by lucarino on 1/14/16.
+ * @author luis.carino
  */
 @ParseClassName("Team")
 public class TeamDAO extends ParseObject {
 
-    private final String ID_COL = "objectId";
-    private final String NAME_COL = "name";
-    private final String IMAGE_ID_COL = "imageId";
+    public static final String ID_COL = "objectId";
+    public static final String NAME_COL = "name";
+    private final String IMAGE_ID_COL = "image";
 
     public TeamDAO() {
     }
@@ -22,7 +22,7 @@ public class TeamDAO extends ParseObject {
         put(NAME_COL, name);
     }
 
-    public void setImageId(int imageId){
+    public void setImageId(String imageId){
         put(IMAGE_ID_COL, imageId);
     }
     
@@ -30,12 +30,9 @@ public class TeamDAO extends ParseObject {
         return getString(NAME_COL);
     }
 
-    public int getImageId(){
-        return getInt(IMAGE_ID_COL);
+    public String getImageId(){
+        return getString(IMAGE_ID_COL);
     }
 
-    public String getId(){
-        return getString(ID_COL);
-    }
 
 }

@@ -8,8 +8,6 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.pools.soccer.soccerpools.model.Game;
 import com.pools.soccer.soccerpools.model.Team;
-import com.pools.soccer.soccerpools.scores.GameDAO;
-import com.pools.soccer.soccerpools.scores.TeamDAO;
 import com.pools.soccer.soccerpools.util.OttoHelper;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -42,31 +40,55 @@ public class ParseCoreManager {
      *
      * @return
      */
-    public void createGame(GameDAO game) {
-        mGameDAO.setHome(game.getHome());
-        mGameDAO.setGuest(game.getGuest());
-        mGameDAO.saveInBackground(new SaveCallback() {
+
+    public void createGame(final String home, final String visitor) {
+
+        List<String> ids = new ArrayList<>();
+        ids.add(home);
+        ids.add(visitor);
+        // make the request to get the team objects stored in the cloud core.
+        ParseQuery<TeamDAO> queryTeamsForMatch = ParseQuery.getQuery("Team");
+        queryTeamsForMatch.whereContainedIn(TeamDAO.ID_COL, ids);
+        queryTeamsForMatch.findInBackground(new FindCallback<TeamDAO>() {
             @Override
-            public void done(ParseException e) {
+            public void done(List<TeamDAO> objects, ParseException e) {
+                if (!CollectionUtils.isEmpty(objects) && e == null) {
+                    // check for home and visitor
+                    if (objects.get(0).getObjectId().equals(home)) {
+                        mGameDAO.setHome(objects.get(0));
+                        mGameDAO.setGuest(objects.get(1));
+                    } else {
+                        mGameDAO.setHome(objects.get(1));
+                        mGameDAO.setGuest(objects.get(0));
+                    }
+                    mGameDAO.saveInBackground(new SaveCallback() {
+                        CreateMatchEvent event = new CreateMatchEvent();
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                event.setIsSuccess(false);
+                                Log.d(TAG, "something bad happened when creating match " +e.getMessage());
+                            } else {
+                                event.setIsSuccess(true);
+                                OttoHelper.getInstance().post(event);
+                            }
+                        }
+                    });
+
+                    Log.d(TAG, "Teams for match: " + objects.toString());
+                } else {
+                    Log.d(TAG, "something bad happened when fetching teams for match creation.");
+                }
 
             }
         });
-    }
 
-    public void createGame(String home, String guest) {
-        mGameDAO.setHome(home);
-        mGameDAO.setGuest(guest);
-        mGameDAO.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Log.d("TAG", e.getMessage());
-            }
-        });
     }
 
 
     public void getAllTeams() {
         ParseQuery<TeamDAO> query = ParseQuery.getQuery("Team");
+        query.orderByAscending(TeamDAO.NAME_COL);
         query.findInBackground(new FindCallback<TeamDAO>() {
             @Override
             public void done(List<TeamDAO> teams, ParseException e) {
@@ -89,15 +111,10 @@ public class ParseCoreManager {
 
 
     /**
-     * DTO for team result events.
+     * Base Event class for otto events.
      */
-    public static class TeamResultEvent {
+    public static class OttoEvent {
         private boolean isSuccess;
-        private List<Team> teams;
-
-        public List<Team> getTeams() {
-            return teams;
-        }
 
         public boolean isSuccess() {
             return isSuccess;
@@ -107,8 +124,22 @@ public class ParseCoreManager {
             this.isSuccess = isSuccess;
         }
 
+    }
+
+    /**
+     * DTO for team result events.
+     */
+    public static class TeamResultEvent extends OttoEvent {
+        private boolean isSuccess;
+        private List<Team> teams;
+
+        public List<Team> getTeams() {
+            return teams;
+        }
+
+
         /**
-         * Decouples the DAO retrieved from the server to the model.
+         * Decouples the DAO used to manipulate the cloud data to a POJO.
          *
          * @param teamsDAO
          */
@@ -119,6 +150,10 @@ public class ParseCoreManager {
             }
 
         }
+    }
+
+    public static class CreateMatchEvent extends OttoEvent {
+
     }
 
 

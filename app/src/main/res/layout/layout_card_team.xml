@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/iv_team_card_image"
+        android:layout_width="@dimen/team_card_image_size"
+        android:layout_height="@dimen/team_card_image_size"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/margin_small"
+        android:scaleType="centerInside"
+        android:src="@drawable/unam" />
+
+    <TextView
+        android:id="@+id/tv_team_card_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/iv_team_card_image"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/team_card_image_size"
+        android:paddingStart="@dimen/med_padding"
+        android:text="Universidad Nacional"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+
+    <View
+        android:id="@+id/verticalSeparator"
+        style="@style/Divider"
+        android:layout_below="@+id/tv_team_card_name"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:background="@color/vertical_separator_color" />
+
+
+    <Button
+        android:id="@+id/button_team_card_visitor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/tv_team_card_name"
+        android:visibility="gone"
+        android:text="@string/team_card_visitor_button" />
+
+    <Button
+        android:id="@+id/button_team_card_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/button_team_card_visitor"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/tv_team_card_name"
+        android:text="@string/team_card_home_button" />
+
+
+</RelativeLayout>

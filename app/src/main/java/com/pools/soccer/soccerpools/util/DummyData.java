@@ -1,14 +1,12 @@
 package com.pools.soccer.soccerpools.util;
 
-import com.parse.Parse;
 import com.parse.ParseObject;
 import com.pools.soccer.soccerpools.model.Bet;
 import com.pools.soccer.soccerpools.model.Game;
-import com.pools.soccer.soccerpools.model.Score;
 import com.pools.soccer.soccerpools.model.Team;
 import com.pools.soccer.soccerpools.model.Week;
-import com.pools.soccer.soccerpools.scores.GameDAO;
-import com.pools.soccer.soccerpools.scores.TeamDAO;
+import com.pools.soccer.soccerpools.service.GameDAO;
+import com.pools.soccer.soccerpools.service.TeamDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +53,8 @@ public class DummyData {
 
     public static Game getGame(){
         Game game = new Game();
-        game.setGuest(new Team("sdasd","Pachuca", 1));
-        game.setHome(new Team("asdas","Dorados", 2));
+        game.setGuest(new Team("sdasd","Pachuca", "pachuca"));
+        game.setHome(new Team("asdas","Dorados", "dorados"));
         game.setBet(new Bet());
         return game;
     }
